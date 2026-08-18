@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0,
+maximum-scale=1.0, user-scalable=no">
+
+<meta name="theme-color" content="#ee4d2d">
+
+<title>Keyword Hunter Shopee</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+background:#f5f5f5;
+color:#222;
+font-family:
+-apple-system,
+BlinkMacSystemFont,
+"Segoe UI",
+Roboto,
+Arial,
+sans-serif;
+}
+
+.container{
+width:100%;
+max-width:760px;
+margin:auto;
+padding:15px;
+}
+
+.header{
+background:linear-gradient(135deg,#ee4d2d,#ff7043);
+color:white;
+border-radius:22px;
+padding:24px 20px;
+margin-bottom:15px;
+box-shadow:0 5px 18px rgba(238,77,45,.22);
+}
+
+.header h1{
+margin:0;
+font-size:25px;
+}
+
+.header p{
+margin:7px 0 0;
+opacity:.92;
+font-size:14px;
+}
+
+.card{
+background:white;
+border-radius:18px;
+padding:18px;
+margin-bottom:14px;
+box-shadow:0 2px 12px rgba(0,0,0,.06);
+}
+
+.card h2{
+margin:0 0 15px;
+font-size:18px;
+}
+
+label{
+display:block;
+font-size:14px;
+font-weight:700;
+margin:12px 0 6px;
+}
+
+input,
+textarea{
+width:100%;
+border:1px solid #ddd;
+border-radius:12px;
+padding:13px;
+font-size:15px;
+outline:none;
+background:white;
+}
+
+input:focus,
+textarea:focus{
+border-color:#ee4d2d;
+}
+
+textarea{
+min-height:90px;
+resize:vertical;
+}
+
+button{
+border:0;
+border-radius:11px;
+padding:11px 14px;
+font-size:14px;
+font-weight:750;
+cursor:pointer;
+}
+
+.main-button{
+width:100%;
+background:#ee4d2d;
+color:white;
+padding:15px;
+font-size:16px;
+margin-top:15px;
+}
+
+.secondary{
+background:#eeeeee;
+color:#333;
+}
+
+.copy{
+padding:7px 9px;
+font-size:12px;
+}
+
+.keyword{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+padding:13px 0;
+border-bottom:1px solid #eee;
+}
+
+.keyword:last-child{
+border-bottom:0;
+}
+
+.keyword-name{
+font-weight:750;
+}
+
+.keyword-type{
+font-size:11px;
+color:#888;
+margin-top:3px;
+}
+
+.score{
+font-weight:900;
+font-size:18px;
+}
+
+.score-high{
+color:#078b4c;
+}
+
+.score-medium{
+color:#c27800;
+}
+
+.score-low{
+color:#777;
+}
+
+.output{
+background:#fafafa;
+border-radius:12px;
+padding:14px;
+line-height:1.55;
+white-space:pre-wrap;
+}
+
+.note{
+color:#888;
+font-size:11px;
+line-height:1.45;
+margin-top:12px;
+}
+
+.history-item{
+display:inline-block;
+margin:4px;
+background:#eee;
+border-radius:10px;
+padding:9px 11px;
+font-size:12px;
+font-weight:700;
+cursor:pointer;
+}
+
+.hidden{
+display:none;
+}
+
+footer{
+text-align:center;
+color:#999;
+font-size:11px;
+padding:15px;
+}
+
+@media(max-width:480px){
+
+.container{
+padding:11px;
+}
+
+.header{
+border-radius:18px;
+padding:20px 17px;
+}
+
+.header h1{
+font-size:22px;
+}
+
+.card{
+padding:15px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>🔎 Keyword Hunter Shopee</h1>
+
+<p>
+Encontre palavras-chave com potencial
+para seus Shopee Vídeos.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h2>🔍 Analisar produto</h2>
+
+<label>
+Nome do produto
+</label>
+
+<input
+id="product"
+type="text"
+placeholder="Ex.: esponja multifuncional com cabo"
+>
+
+
+<label>
+Link da Shopee
+<span style="font-weight:400;color:#999">
+(opcional na V1)
+</span>
+</label>
+
+<input
+id="link"
+type="text"
+placeholder="Cole aqui o link do produto"
+>
+
+
+<label>
+Características confirmadas
+</label>
+
+<textarea
+id="features"
+placeholder="Ex.: cabo longo, para pia, banheiro e azulejo"
+></textarea>
+
+
+<button
+class="main-button"
+onclick="analyzeProduct()"
+>
+🔎 ANALISAR PRODUTO
+</button>
+
+</div>
+
+
+<div
+id="results"
+class="hidden"
+>
+
+
+<div class="card">
+
+<h2>
+🎯 Palavras-chave encontradas
+</h2>
+
+<div id="keywords"></div>
+
+<div class="note">
+
+A pontuação da V1 é uma estimativa baseada
+em relevância, especificidade, intenção de
+compra e potencial de diferenciação.
+
+<br><br>
+
+A V1 ainda não consulta o volume real de
+buscas da Shopee.
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+🔥 Palavras prioritárias
+</h2>
+
+<div id="priority"></div>
+
+<br>
+
+<button
+class="secondary"
+onclick="copyPriority()"
+>
+📋 Copiar palavras
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+📝 Descrição otimizada
+</h2>
+
+<div
+id="description"
+class="output"
+></div>
+
+<br>
+
+<button
+class="secondary"
+onclick="copyElement('description')"
+>
+📋 Copiar descrição
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+#️⃣ Hashtags
+</h2>
+
+<div
+id="hashtags"
+class="output"
+></div>
+
+<br>
+
+<button
+class="secondary"
+onclick="copyElement('hashtags')"
+>
+📋 Copiar hashtags
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>
+🎥 Termos para falar no vídeo
+</h2>
+
+<div
+id="videoWords"
+class="output"
+></div>
+
+<button
+class="secondary"
+onclick="copyElement('videoWords')"
+>
+📋 Copiar
+</button>
+
+</div>
+
+
+</div>
+
+
+<div class="card">
+
+<h2>
+🕘 Histórico
+</h2>
+
+<div id="history"></div>
+
+<br>
+
+<button
+class="secondary"
+onclick="clearHistory()"
+>
+🗑️ Limpar histórico
+</button>
+
+</div>
+
+
+<footer>
+
+Keyword Hunter Shopee — V1 Aprimorada
+
+</footer>
+
+</div>
+
+
+<script>
+
+
+const STOP_WORDS = new Set([
+
+"de",
+"da",
+"do",
+"das",
+"dos",
+"para",
+"com",
+"sem",
+"por",
+"em",
+"no",
+"na",
+"nos",
+"nas",
+"um",
+"uma",
+"uns",
+"umas",
+"e",
+"a",
+"o",
+"as",
+"os"
+
+]);
+
+
+const GENERIC_WORDS = new Set([
+
+"produto",
+"item",
+"coisa",
+"oferta",
+"barato",
+"melhor",
+"qualidade",
+"comprar",
+"compra",
+"shopee",
+"promocao",
+"promoção"
+
+]);
+
+
+function normalize(text){
+
+return text
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.replace(/[^a-z0-9\s]/g," ")
+.replace(/\s+/g," ")
+.trim();
+
+}
+
+
+function titleCase(text){
+
+return text.replace(
+/\b\w/g,
+function(letter){
+return letter.toUpperCase();
+}
+);
+
+}
+
+
+function generateKeywords(product,features){
+
+const name =
+normalize(product);
+
+const featureText =
+normalize(features);
+
+const words =
+name
+.split(" ")
+.filter(
+word =>
+word.length > 2 &&
+!STOP_WORDS.has(word)
+);
+
+const featureWords =
+featureText
+.split(" ")
+.filter(
+word =>
+word.length > 2 &&
+!STOP_WORDS.has(word)
+);
+
+const results = [];
+
+
+function addKeyword(
+term,
+type,
+baseScore
+){
+
+term =
+normalize(term);
+
+if(!term){
+return;
+}
+
+if(
+results.some(
+item =>
+item.term === term
+)
+){
+return;
+}
+
+let score =
+baseScore;
+
+
+if(
+term.split(" ").length >= 3
+){
+score += 6;
+}
+
+
+if(
+term.length >= 15
+){
+score += 3;
+}
+
+
+if(
+GENERIC_WORDS.has(term)
+){
+score -= 25;
+}
+
+
+score =
+Math.max(
+35,
+Math.min(97,score)
+);
+
+
+results.push({
+
+term,
+type,
+score
+
+});
+
+}
+
+
+addKeyword(
+name,
+"Principal",
+82
+);
+
+
+if(words.length >= 2){
+
+addKeyword(
+words.slice(0,2).join(" "),
+"Principal",
+86
+);
+
+}
+
+
+if(words.length >= 2){
+
+addKeyword(
+words.slice(-2).join(" "),
+"Variação",
+78
+);
+
+}
+
+
+words
+.slice(0,6)
+.forEach(
+word => {
+
+addKeyword(
+name + " " + word,
+"Cauda longa",
+84
+);
+
+}
+);
+
+
+featureWords
+.slice(0,8)
+.forEach(
+word => {
+
+addKeyword(
+name + " " + word,
+"Cauda longa",
+88
+);
+
+}
+);
+
+
+for(
+let i=0;
+i<Math.min(words.length,5);
+i++
+){
+
+for(
+let j=i+1;
+j<Math.min(words.length,6);
+j++
+){
+
+addKeyword(
+words[i] + " " + words[j],
+"Relacionado",
+72
+);
+
+}
+
+}
+
+
+return results
+.sort(
+(a,b) =>
+b.score-a.score
+)
+.slice(0,15);
+
+}
+
+
+function analyzeProduct(){
+
+const product =
+document
+.getElementById("product")
+.value
+.trim();
+
+
+const features =
+document
+.getElementById("features")
+.value
+.trim();
+
+
+if(!product){
+
+alert(
+"Digite o nome do produto."
+);
+
+return;
+
+}
+
+
+const keywords =
+generateKeywords(
+product,
+features
+);
+
+
+document
+.getElementById("results")
+.classList
+.remove("hidden");
+
+
+renderKeywords(keywords);
+
+renderPriority(keywords);
+
+renderDescription(
+product,
+features,
+keywords
+);
+
+renderHashtags(keywords);
+
+renderVideoWords(keywords);
+
+saveHistory(
+product,
+keywords
+);
+
+}
+
+
+function renderKeywords(keywords){
+
+const container =
+document
+.getElementById("keywords");
+
+
+container.innerHTML =
+keywords
+.map(
+item => {
+
+let scoreClass =
+"score-low";
+
+
+if(item.score >= 85){
+
+scoreClass =
+"score-high";
+
+}
+else if(item.score >= 70){
+
+scoreClass =
+"score-medium";
+
+}
+
+
+return `
+
+<div class="keyword">
+
+<div>
+
+<div class="keyword-name">
+
+${titleCase(item.term)}
+
+</div>
+
+<div class="keyword-type">
+
+${item.type}
+
+</div>
+
+</div>
+
+<div
+class="score ${scoreClass}"
+>
+
+${item.score}
+
+</div>
+
+</div>
+
+`;
+
+}
+)
+.join("");
+
+}
+
+
+function renderPriority(keywords){
+
+const top =
+keywords.slice(0,7);
+
+
+const container =
+document
+.getElementById("priority");
+
+
+container.innerHTML =
+top
+.map(
+item => `
+
+<div class="keyword">
+
+<span>
+
+${titleCase(item.term)}
+
+</span>
+
+<button
+class="secondary copy"
+onclick='copyText(${JSON.stringify(item.term)})'
+>
+
+Copiar
+
+</button>
+
+</div>
+
+`
+)
+.join("");
+
+}
+
+
+function renderDescription(
+product,
+features,
+keywords
+){
+
+const mainTerms =
+keywords
+.slice(0,5)
+.map(
+item =>
+item.term
+);
+
+
+let description =
+titleCase(product);
+
+
+if(features){
+
+description +=
+" — " +
+features
+.replace(/[.!?]+$/,"");
+
+}
+
+
+description +=
+". ";
+
+
+description +=
+"Uma opção prática para facilitar a rotina e deixar essa tarefa mais simples.";
+
+
+description +=
+" Confira os detalhes do produto para ver se ele atende ao que você procura.";
+
+
+description +=
+"\n\nTermos principais: " +
+mainTerms.join(", ");
+
+
+document
+.getElementById("description")
+.textContent =
+description;
+
+}
+
+
+function renderHashtags(keywords){
+
+const tags = [];
+
+
+tags.push(
+"#shopeevideo"
+);
+
+tags.push(
+"#achadinhos"
+);
+
+tags.push(
+"#comprinhas"
+);
+
+
+keywords
+.slice(0,5)
+.forEach(
+item => {
+
+const tag =
+"#" +
+item.term
+.replace(/\s+/g,"");
+
+
+if(!tags.includes(tag)){
+
+tags.push(tag);
+
+}
+
+}
+);
+
+
+document
+.getElementById("hashtags")
+.textContent =
+tags
+.slice(0,8)
+.join(" ");
+
+}
+
+
+function renderVideoWords(keywords){
+
+const words =
+keywords
+.slice(0,5)
+.map(
+item =>
+"• " +
+titleCase(item.term)
+)
+.join("\n");
+
+
+document
+.getElementById("videoWords")
+.textContent =
+words;
+
+}
+
+
+function copyText(text){
+
+navigator
+.clipboard
+.writeText(text)
+.then(
+() =>
+alert("Copiado!")
+);
+
+}
+
+
+function copyElement(id){
+
+const text =
+document
+.getElementById(id)
+.textContent;
+
+copyText(text);
+
+}
+
+
+function copyPriority(){
+
+const history =
+JSON.parse(
+localStorage.getItem(
+"keywordHunterHistory"
+) || "[]"
+);
+
+
+if(!history.length){
+return;
+}
+
+
+const words =
+history[0]
+.keywords
+.slice(0,7)
+.join(", ");
+
+
+copyText(words);
+
+}
+
+
+function saveHistory(
+product,
+keywords
+){
+
+let history =
+JSON.parse(
+localStorage.getItem(
+"keywordHunterHistory"
+) || "[]"
+);
+
+
+const data = {
+
+product,
+
+keywords:
+keywords.map(
+item =>
+item.term
+),
+
+date:
+new Date()
+.toLocaleString(
+"pt-BR"
+)
+
+};
+
+
+history =
+history.filter(
+item =>
+item.product !== product
+);
+
+
+history.unshift(data);
+
+
+history =
+history.slice(0,10);
+
+
+localStorage.setItem(
+"keywordHunterHistory",
+JSON.stringify(history)
+);
+
+
+renderHistory();
+
+}
+
+
+function renderHistory(){
+
+const container =
+document
+.getElementById("history");
+
+
+const history =
+JSON.parse(
+localStorage.getItem(
+"keywordHunterHistory"
+) || "[]"
+);
+
+
+if(!history.length){
+
+container.innerHTML =
+'<span style="color:#999;font-size:12px">Nenhuma análise realizada.</span>';
+
+return;
+
+}
+
+
+container.innerHTML =
+history
+.map(
+(item,index) => `
+
+<span
+class="history-item"
+onclick="loadHistory(${index})"
+>
+
+${titleCase(item.product)}
+
+</span>
+
+`
+)
+.join("");
+
+}
+
+
+function loadHistory(index){
+
+const history =
+JSON.parse(
+localStorage.getItem(
+"keywordHunterHistory"
+) || "[]"
+);
+
+
+const item =
+history[index];
+
+
+if(!item){
+return;
+}
+
+
+document
+.getElementById("product")
+.value =
+item.product;
+
+
+analyzeProduct();
+
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+}
+
+
+function clearHistory(){
+
+if(
+confirm(
+"Deseja apagar o histórico?"
+)
+){
+
+localStorage.removeItem(
+"keywordHunterHistory"
+);
+
+renderHistory();
+
+}
+
+}
+
+
+renderHistory();
+
+</script>
+
+</body>
+</html>
